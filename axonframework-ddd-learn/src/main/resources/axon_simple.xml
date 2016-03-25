@@ -1,0 +1,29 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:axon="http://www.axonframework.org/schema/core" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.axonframework.org/schema/core http://www.axonframework.org/schema/axon-core.xsd">
+                           
+   	<!-- spring组件扫描，实现bean的自动载入 -->
+	<context:component-scan base-package="com.haedrig"></context:component-scan>
+
+	<axon:command-bus id="commandBus" ></axon:command-bus>
+	
+	<axon:event-bus id="eventBus"/>
+	
+	<axon:event-sourcing-repository id="orderRepository" aggregate-type="com.haedrig.order.domain.Order" locking-strategy="NO_LOCKING" ></axon:event-sourcing-repository>
+	
+	<axon:filesystem-event-store id="eventStore" base-dir="events" event-serializer="jacksonSerializer"/>
+	
+	<bean id="jacksonSerializer" class="org.axonframework.serializer.json.JacksonSerializer"></bean>
+	
+	<bean id="xstreamSerializer" class="org.axonframework.serializer.xml.XStreamSerializer"></bean>
+
+	<bean id="commandGateway"
+		class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
+		<property name="commandBus" ref="commandBus" />
+	</bean>
+	
+	<axon:annotation-config />
+	
+</beans>
