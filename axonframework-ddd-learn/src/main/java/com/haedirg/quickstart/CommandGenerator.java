@@ -42,11 +42,16 @@ public class CommandGenerator {
     	
     	StressResult result = StressTestUtils.test(1000, 10000, new StressTask() {
 			
-			public Object doTask() throws Exception {
+			public Object doTask() {
 //				Order order =  commandGateway.sendAndWait(new LoadOrderCommand(itemId1));
 				//System.out.println(order.getId());
-				final String itemId1 = new UUID().toString();
-				commandGateway.sendAndWait(new CreateOrderCommand(itemId1));
+				try {
+					final String itemId1 = new UUID().toString();
+					commandGateway.sendAndWait(new CreateOrderCommand(itemId1));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 				return null;
 			}
 		});

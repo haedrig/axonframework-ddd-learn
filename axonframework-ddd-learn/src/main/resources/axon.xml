@@ -5,7 +5,7 @@
                            http://www.axonframework.org/schema/core http://www.axonframework.org/schema/axon-core.xsd">
                            
    	<!-- spring组件扫描，实现bean的自动载入 -->
-	<context:component-scan base-package="com.comall"></context:component-scan>
+	<context:component-scan base-package="com.haedrig"></context:component-scan>
 
 
 	<axon:disruptor-command-bus id="commandBus"
