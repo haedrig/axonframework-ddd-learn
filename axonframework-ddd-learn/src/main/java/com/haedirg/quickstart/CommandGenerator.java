@@ -36,27 +36,27 @@ public class CommandGenerator {
 
     public static void sendCommands(final CommandGateway commandGateway) {
     	
-//    	final String itemId1 = new UUID().toString();
-//		commandGateway.send(new CreateOrderCommand(itemId1));
-//		
+    	final String itemId1 = new UUID().toString();
+		commandGateway.send(new CreateOrderCommand(itemId1));
+		
     	
-    	StressResult result = StressTestUtils.test(1000, 10000, new StressTask() {
-			
-			public Object doTask() {
-//				Order order =  commandGateway.sendAndWait(new LoadOrderCommand(itemId1));
-				//System.out.println(order.getId());
-				try {
-					final String itemId1 = new UUID().toString();
-					commandGateway.sendAndWait(new CreateOrderCommand(itemId1));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				return null;
-			}
-		});
-//    	
-    	System.out.println(StressTestUtils.format(result));
+//    	StressResult result = StressTestUtils.test(1000, 10000, new StressTask() {
+//			
+//			public Object doTask() {
+////				Order order =  commandGateway.sendAndWait(new LoadOrderCommand(itemId1));
+//				//System.out.println(order.getId());
+//				try {
+//					final String itemId1 = new UUID().toString();
+//					commandGateway.sendAndWait(new CreateOrderCommand(itemId1));
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//				
+//				return null;
+//			}
+//		});
+////    	
+//    	System.out.println(StressTestUtils.format(result));
         
         
     }

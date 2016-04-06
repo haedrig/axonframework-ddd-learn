@@ -6,7 +6,11 @@ public class OrderClosedEvent implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final String id;
+	private String id;
+	
+	public OrderClosedEvent() {
+		
+	}
 	
 	public OrderClosedEvent(String id) {
 		this.id = id;

@@ -1,0 +1,62 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:axon="http://www.axonframework.org/schema/core" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.axonframework.org/schema/core http://www.axonframework.org/schema/axon-core.xsd">
+                           
+   	<!-- spring组件扫描，实现bean的自动载入 -->
+	<context:component-scan base-package="com.haedrig"></context:component-scan>
+
+
+	<axon:disruptor-command-bus id="commandBus"
+		event-bus="eventBus" event-store="eventStore" buffer-size="4096" claim-strategy="multi-threaded" wait-strategy="busy-spin"
+		executor="executor" producer-type="multi-threaded"  publisher-threads="1" invoker-threads="1"   />
+
+	
+    <bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="100"/>
+        <property name="maxPoolSize" value="100"/>
+        <property name="waitForTasksToCompleteOnShutdown" value="true"/>
+    </bean>
+    
+	<axon:event-bus id="eventBus" />
+	
+	<axon:disruptor-repository id="orderRepository"
+		aggregate-type="com.haedrig.order.domain.Order"
+		command-bus="commandBus" ></axon:disruptor-repository>
+	
+	
+	<axon:filesystem-event-store id="eventStore" base-dir="events" event-serializer="jacksonSerializer"/>
+	
+	 
+	 <!-- 
+	<bean id="eventStore" class="org.axonframework.quickstart.InMemoryEventStore"></bean>
+	 -->
+	 
+	<bean id="jacksonSerializer" class="org.axonframework.serializer.json.JacksonSerializer"></bean>
+
+	<!--  
+	<bean id="javaSerializer" class="org.axonframework.serializer.JavaSerializer"></bean>
+	
+	<bean id="dbObjectXStreamSerializer" class="org.axonframework.serializer.bson.DBObjectXStreamSerializer"></bean>
+	
+	<bean id="xstreamSerializer" class="org.axonframework.serializer.xml.XStreamSerializer"></bean>
+	
+	-->
+	
+	<bean class="org.axonframework.eventhandling.scheduling.java.SimpleEventSchedulerFactoryBean" />
+	
+	<bean id="commandGateway"
+		class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
+		<property name="commandBus" ref="commandBus" />
+	</bean>
+	
+	<axon:saga-manager id="sagaManager"  >
+	    <axon:types>
+	        com.haedrig.order.domain.saga.OrderFilterSaga
+	    </axon:types>
+	</axon:saga-manager>
+	
+	<axon:annotation-config />
+	
+</beans>

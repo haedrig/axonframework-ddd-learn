@@ -17,6 +17,8 @@ public class Order extends AbstractAnnotatedAggregateRoot<String> {
 	private String id;
 	
 	private Integer status;
+	
+	private Integer count;
 
 	protected Order() {
 
@@ -30,6 +32,7 @@ public class Order extends AbstractAnnotatedAggregateRoot<String> {
 	public void onCreate(OrderCreatedEvent event) {
 		this.id = event.getId();
 		this.status = 1;
+		this.count = 100;
 	}
 	
 	
@@ -40,6 +43,7 @@ public class Order extends AbstractAnnotatedAggregateRoot<String> {
 	@EventSourcingHandler
 	public void onCreate(OrderClosedEvent event) {
 		this.status = 0;
+		this.count--;
 	}
 	
 
@@ -51,6 +55,9 @@ public class Order extends AbstractAnnotatedAggregateRoot<String> {
 		return status;
 	}
 
+	public Integer getCount() {
+		return count;
+	}
 
 
 }

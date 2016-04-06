@@ -18,5 +18,5 @@ public class OrderCreatedEvent implements Serializable {
 	public String getId() {
 		return id;
 	}
-	
+
 }
